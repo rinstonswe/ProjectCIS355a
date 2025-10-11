@@ -9,7 +9,7 @@ public class Main
     private static double total = 0.0;
     private static String order = "";
 
-    static void main(String[] args)
+    public static void main(String[] args)
     {
 
         int choice;
@@ -24,23 +24,33 @@ public class Main
             System.out.println("4) Exit");
 
             //get users choice
-            System.out.print("\nEnter your choice: ");
+            System.out.println("\nEnter your choice: ");
             choice = scan.nextInt();
 
             switch (choice){
                 case 1:
                     addToOrder();
+                    showCurrentOrder();
+                    scan.nextLine();
+                    System.out.println("Press ENTER to continue...\n\n");
+                    scan.nextLine();
                     break;
                 case 2:
                     showCurrentOrder();
+                    scan.nextLine();
+                    System.out.println("Press ENTER to continue...\n\n");
+                    scan.nextLine();
                     break;
                 case 3:
                     total = 0;
                     order = "";
                     showCurrentOrder();
+                    scan.nextLine();
+                    System.out.println("Press ENTER to continue...\n\n");
+                    scan.nextLine();
                     break;
                 case 4:
-                    System.out.println("\nGoodbye!");
+                    System.out.println("Goodbye!");
                     break;
                 default:        //Normally for error checking
                     System.out.println("Invalid choice");
@@ -53,31 +63,40 @@ public class Main
     {
         Burger burger = new Burger();
         String option;
-        System.out.println("(1) Single or (2) double?");
+        System.out.print("Single or Double burger (single/double)? ");
         option = scan.next();
         if (option.equalsIgnoreCase("Single"))
-            {burger.setType("Single");}
+        {burger.setType("Single");}
         else if  (option.equalsIgnoreCase("Double"))
-            {burger.setType("Double");}
+        {burger.setType("Double");}
         else {System.out.println("\nInvalid burger type");return;}
-        System.out.println("Cheese y/n?");
+        System.out.println("Item Price: " + fmt.format(burger.calculateItemCost()));
+
+        System.out.print("Add cheese (y/n)? ");
         option = scan.next();
         burger.setCheese(option.equalsIgnoreCase("y"));
-        System.out.println("Bacon y/n?");
+        System.out.println("Item Price: " + fmt.format(burger.calculateItemCost()));
+
+        System.out.print("Add bacon (y/n)? ");
         option = scan.next();
         burger.setBacon(option.equalsIgnoreCase("y"));
-        System.out.println("Meal y/n?");
+        System.out.println("Item Price: " + fmt.format(burger.calculateItemCost()));
+
+        System.out.print("Make it a Meal (y/n)? ");
         option = scan.next();
         burger.setMeal(option.equalsIgnoreCase("y"));
-        System.out.println("How many?");
+        System.out.println("Item Price: " + fmt.format(burger.calculateItemCost()) + "\n");
+
+        System.out.println("How many of these burgers to add to the order (0 to cancel)? ");
         int quantity = scan.nextInt();
         burger.setQuantity(quantity);
+
         order = order + burger.toString();
         total = burger.calculateTotalCost();
     }
 
     public static void showCurrentOrder() {
-        System.out.println("Current Order\n" + order + "\nOrder Total: " + fmt.format(total));
+        System.out.println("Current Order\n" + order + "\nOrder Total: " + fmt.format(total) + "\n");
     }
 
 }//Ends Main class

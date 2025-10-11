@@ -88,7 +88,7 @@ public class Burger {
             order = order + " Single";
         }
         else if (type.equals("Double")){
-            order = order + " Single";
+            order = order + " Double";
         }
         if (cheese){
             order = order + ", cheese";
