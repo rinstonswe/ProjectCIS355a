@@ -57,7 +57,18 @@ public class Main
         } while (choice != EXIT_VALUE);
     }
     public static void addStock() {
-        System.out.println("addStock() called");
+        System.out.println("Enter stock name:");
+        String name = scan.nextLine();
+        System.out.println("Enter stock price:");
+        double price = scan.nextDouble();
+        System.out.println("Enter stock quantity:");
+        int quantity = scan.nextInt();
+
+        Stock stock = new Stock(name,quantity,price,price);
+
+        stockList.add(stock);
+
+        showStockPortfolio();
     }
 
     public static void removeStock() {
