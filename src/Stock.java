@@ -1,5 +1,4 @@
-public class Stock
-{
+public class Stock {
     // create your attributes here
 
     // create your constructors here

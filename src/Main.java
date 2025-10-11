@@ -29,22 +29,22 @@ public class Main
             switch (choice) {
                 case 1:
                     scan.nextLine();
-                    System.out.println("Case 1");
+                    addStock();
                     scan.nextLine();
                     break;
                 case 2:
                     scan.nextLine();
-                    System.out.println("Case 2");
+                    removeStock();
                     scan.nextLine();
                     break;
                 case 3:
                     scan.nextLine();
-                    System.out.println("Case 3");
+                    displaySingleStock();
                     scan.nextLine();
                     break;
                 case 4:
                     scan.nextLine();
-                    System.out.println("Case 4");
+                    showStockPortfolio();
                     scan.nextLine();
                 case 5:
                     System.out.println("Goodbye!");
@@ -55,5 +55,20 @@ public class Main
             }
 
         } while (choice != EXIT_VALUE);
+    }
+    public static void addStock() {
+        System.out.println("addStock() called");
+    }
+
+    public static void removeStock() {
+        System.out.println("removeStock() called");
+    }
+
+    public static void displaySingleStock() {
+        System.out.println("displaySingleStock() called");
+    }
+
+    public static void showStockPortfolio() {
+        System.out.println("showStockPortfolio() called");
     }
 }
