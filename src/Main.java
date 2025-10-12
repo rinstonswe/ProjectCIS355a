@@ -10,7 +10,7 @@ public class Main
     private static ArrayList<Stock> stockList = new ArrayList<Stock>();
 
     public static void main(String[] args) {
-        int choice;
+        int choice = 0;
         final int EXIT_VALUE = 5;
 
         do {
@@ -23,55 +23,62 @@ public class Main
             System.out.println("5) Exit");
 
             //get users choice
-            System.out.println("\nEnter your choice: ");
+            System.out.print("\nEnter your choice: ");
             choice = scan.nextInt();
+            scan.nextLine();
 
             switch (choice) {
                 case 1:
-                    scan.nextLine();
                     addStock();
-                    scan.nextLine();
+                    pause();
                     break;
                 case 2:
-                    scan.nextLine();
                     removeStock();
+                    pause();
                     break;
                 case 3:
-                    scan.nextLine();
                     displaySingleStock();
-                    scan.nextLine();
+                    pause();;
                     break;
                 case 4:
-                    scan.nextLine();
+
                     showStockPortfolio();
-                    scan.nextLine();
+                    pause();
+                    break;
                 case 5:
                     System.out.println("Goodbye!");
                     break;
                 default:        //Normally for error checking
-                    System.out.println("Invalid choice");
+                    System.out.println("\nError. Please select from the menu.");
+                    pause();
                     break;
             }
 
         } while (choice != EXIT_VALUE);
     }
     public static void addStock() {
-        System.out.println("Enter stock name:");
+        System.out.print("Enter stock name: ");
         String name = scan.nextLine();
-        System.out.println("Enter stock price:");
-        double price = scan.nextDouble();
-        System.out.println("Enter stock quantity:");
+        System.out.print("Enter quantity: ");
         int quantity = scan.nextInt();
+        scan.nextLine();
+        System.out.print("Enter purchase price: ");
+        double pPrice = scan.nextDouble();
+        scan.nextLine();
+        System.out.print("Enter current price: ");
+        double cPrice = scan.nextDouble();
+        scan.nextLine();
 
-        Stock stock = new Stock(name,quantity,price,price);
+        Stock stock = new Stock(name,quantity,pPrice,cPrice);
 
         stockList.add(stock);
 
         showStockPortfolio();
+
     }
 
     public static void removeStock() {
-        System.out.println("Enter stock to be removed:");
+        System.out.println("Enter stock name to remove: ");
         String name = scan.nextLine();
         boolean found = false;
         for (Stock stock : stockList) {
@@ -82,19 +89,51 @@ public class Main
             }
         }
         if (!found) {
-            System.out.println("Stock not found");
+            System.out.println("\nStock not found");
         }
-        else {
-            System.out.println("Stock removed");
-        }
+
         showStockPortfolio();
+
     }
 
     public static void displaySingleStock() {
+        System.out.println("Enter stock name: ");
+        String name = scan.nextLine();
+        boolean found = false;
+        for (Stock stock : stockList) {
+            if (stock.getCompanyName().equalsIgnoreCase(name)) {
+                System.out.println("Stock Name: " + stock.getCompanyName());
+                System.out.println("Number of Shares: " + stock.getNumberOfShares());
+                System.out.println("Purchase Price: " + fmt.format(stock.getPurchasePrice()));
+                System.out.println("Current Price: " + fmt.format(stock.getCurrentPrice()));
+
+                if (stock.getProfitLoss() >= 0) {
+                    System.out.println("\nProfit/Loss: Profit of " + fmt.format(stock.getProfitLoss()));
+                }
+                else {
+                    System.out.println("\nProfit/Loss: Loss of " + fmt.format(stock.getProfitLoss()));
+                }
+
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            System.out.println("\nStock not found");
+        }
 
     }
 
     public static void showStockPortfolio() {
-        System.out.println(stockList);
+        System.out.println("Stock Portfolio:\n");
+        for (Stock stock : stockList) {
+            System.out.println(stock);
+        }
+    }
+
+    public static void pause() {
+        System.out.println("\nPress ENTER to continue...");
+        scan.nextLine();
+        System.out.print("\n\n");
     }
 }

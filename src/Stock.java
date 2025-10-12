@@ -19,6 +19,13 @@ public class Stock {
         this.currentPrice = currentPrice;
     }
     // create your behaviors here
+    public double getProfitLoss() {
+        return (currentPrice - purchasePrice) * numberOfShares;
+    }
+
+    public String toString() {
+        return String.format("%s: %d shares", companyName, numberOfShares);
+    }
 
     // create your getters and setters here
     public void setCompanyName(String companyName) {
