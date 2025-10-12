@@ -35,7 +35,6 @@ public class Main
                 case 2:
                     scan.nextLine();
                     removeStock();
-                    scan.nextLine();
                     break;
                 case 3:
                     scan.nextLine();
@@ -72,14 +71,30 @@ public class Main
     }
 
     public static void removeStock() {
-        System.out.println("removeStock() called");
+        System.out.println("Enter stock to be removed:");
+        String name = scan.nextLine();
+        boolean found = false;
+        for (Stock stock : stockList) {
+            if (stock.getCompanyName().equalsIgnoreCase(name)) {
+                stockList.remove(stock);
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            System.out.println("Stock not found");
+        }
+        else {
+            System.out.println("Stock removed");
+        }
+        showStockPortfolio();
     }
 
     public static void displaySingleStock() {
-        System.out.println("displaySingleStock() called");
+
     }
 
     public static void showStockPortfolio() {
-        System.out.println("showStockPortfolio() called");
+        System.out.println(stockList);
     }
 }
