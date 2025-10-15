@@ -1,3 +1,4 @@
+import java.io.*;
 import java.text.DecimalFormat;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -7,12 +8,16 @@ public class Main
     // class level references and variables
     private static Scanner scan = new Scanner(System.in);
     public static DecimalFormat fmt = new DecimalFormat("#,##0.00");
-    private static ArrayList<Stock> stockList = new ArrayList<Stock>();
+    private static ArrayList<Stock> stockList = new ArrayList<>();
+
+    private static final String FILENAME = "Stocks.csv";
 
     public static void main(String[] args) {
         int choice = 0;
         final int EXIT_VALUE = 5;
+        StockIO inFile = new StockIO(FILENAME);
 
+        stockList = inFile.getData();
         do {
             //show menu
             System.out.println("Menu\n");
@@ -38,7 +43,7 @@ public class Main
                     break;
                 case 3:
                     displaySingleStock();
-                    pause();;
+                    pause();
                     break;
                 case 4:
 
@@ -53,8 +58,9 @@ public class Main
                     pause();
                     break;
             }
-
         } while (choice != EXIT_VALUE);
+        StockIO outToFile = new StockIO(FILENAME);
+        outToFile.saveData(stockList);
     }
     public static void addStock() {
         System.out.print("Enter stock name: ");

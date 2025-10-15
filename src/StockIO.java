@@ -34,27 +34,46 @@ public class StockIO {
         }
     }
 
-    public ArrayList<Stock> loadData(String fileName) throws IOException {
-        ArrayList<Stock> stockData = new ArrayList<>();
-        try {
-            BufferedReader inFile = new BufferedReader(new FileReader(fileName));
+    public ArrayList<Stock> getData( )
+    {
+        // create the arraylist that can work with Stock objects
+        ArrayList<Stock> data = new ArrayList<>();
+
+        try
+        {
+            // create a connection to the file and create a tokenizer
+            BufferedReader inFile = new BufferedReader( new FileReader(fileName) );
+
+            // get the first line in the file
             String inputLine = inFile.readLine();
 
-            while (inputLine != null) {
+            // read the file line by line until we get nothing (null)
+            while ( inputLine != null )
+            {
+                // break the line into parts based on commas -- IBM,10,150,220
                 StringTokenizer tokens = new StringTokenizer(inputLine, ",");
-                String companyName = tokens.nextToken();
-                int numberOfShares = Integer.parseInt(tokens.nextToken());
-                double purchasePrice = Double.parseDouble(tokens.nextToken());
-                double currentPrice = Double.parseDouble(tokens.nextToken());
-                stockData.add(new Stock(companyName, numberOfShares, purchasePrice, currentPrice));
+                String company = tokens.nextToken();
+                int shares = Integer.parseInt(tokens.nextToken());
+                double pPrice = Double.parseDouble(tokens.nextToken());
+                double cPrice = Double.parseDouble(tokens.nextToken());
+
+                // create a Stock object and add it to the arraylist
+                Stock stk = new Stock(company, shares, pPrice, cPrice);
+                data.add(stk);
+
+                // read the next line in the file
                 inputLine = inFile.readLine();
             }
+
+            // close the file
             inFile.close();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new IOException(e);
         }
-        return stockData;
+        catch(IOException ex)   // catch any writing errors
+        {
+            System.out.println("\nError. Unable to read from the file: " + ex.getMessage());
+        }
+
+        // return the arraylist
+        return data;
     }
 }
