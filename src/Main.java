@@ -121,7 +121,6 @@ public class Main
         if (!found) {
             System.out.println("\nStock not found");
         }
-
     }
 
     public static void showStockPortfolio() {
@@ -129,11 +128,20 @@ public class Main
         for (Stock stock : stockList) {
             System.out.println(stock);
         }
+        System.out.println("\nTotal Value: " + fmt.format(totalValue()));
     }
 
     public static void pause() {
         System.out.println("\nPress ENTER to continue...");
         scan.nextLine();
         System.out.print("\n\n");
+    }
+
+    public static double totalValue() {
+        double total = 0;
+        for (Stock stock : stockList) {
+            total += (stock.getNumberOfShares() * stock.getCurrentPrice());
+        }
+        return total;
     }
 }
