@@ -2,30 +2,27 @@ import java.io.*;
 import java.text.DecimalFormat;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.sql.*;
 
 public class Main
 {
     // class level references and variables
     private static Scanner scan = new Scanner(System.in);
     public static DecimalFormat fmt = new DecimalFormat("#,##0.00");
-    private static ArrayList<Stock> stockList = new ArrayList<>();
 
-    private static final String FILENAME = "Stocks.csv";
 
     public static void main(String[] args) {
         int choice = 0;
-        final int EXIT_VALUE = 5;
-        StockIO inFile = new StockIO(FILENAME);
+        final int EXIT_VALUE = 4;
 
-        stockList = inFile.getData();
         do {
             //show menu
             System.out.println("Menu\n");
             System.out.println("1) Add Stock");
             System.out.println("2) Remove Stock");
             System.out.println("3) Display Single Stock");
-            System.out.println("4) Show Stock Portfolio");
-            System.out.println("5) Exit");
+            System.out.println("4) Exit");
+
 
             //get users choice
             System.out.print("\nEnter your choice: ");
@@ -34,23 +31,18 @@ public class Main
 
             switch (choice) {
                 case 1:
-                    addStock();
+                    addStudent();
                     pause();
                     break;
                 case 2:
-                    removeStock();
+                    deleteStudent();
                     pause();
                     break;
                 case 3:
-                    displaySingleStock();
+                    displayAllStudent();
                     pause();
                     break;
                 case 4:
-
-                    showStockPortfolio();
-                    pause();
-                    break;
-                case 5:
                     System.out.println("Goodbye!");
                     break;
                 default:        //Normally for error checking
@@ -59,95 +51,20 @@ public class Main
                     break;
             }
         } while (choice != EXIT_VALUE);
-        StockIO outToFile = new StockIO(FILENAME);
-        outToFile.saveData(stockList);
-    }
-    public static void addStock() {
-        System.out.print("Enter stock name: ");
-        String name = scan.nextLine();
-        System.out.print("Enter quantity: ");
-        int quantity = scan.nextInt();
-        scan.nextLine();
-        System.out.print("Enter purchase price: ");
-        double pPrice = scan.nextDouble();
-        scan.nextLine();
-        System.out.print("Enter current price: ");
-        double cPrice = scan.nextDouble();
-        scan.nextLine();
-
-        Stock stock = new Stock(name,quantity,pPrice,cPrice);
-
-        stockList.add(stock);
-
-        showStockPortfolio();
-
     }
 
-    public static void removeStock() {
-        System.out.println("Enter stock name to remove: ");
-        String name = scan.nextLine();
-        boolean found = false;
-        for (Stock stock : stockList) {
-            if (stock.getCompanyName().equalsIgnoreCase(name)) {
-                stockList.remove(stock);
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            System.out.println("\nStock not found");
-        }
+    public static void addStudent()
+    {System.out.println("\nAdd Student");}
 
-        showStockPortfolio();
-
+    public static void deleteStudent() {
+        System.out.println("\nDelete Student");
     }
 
-    public static void displaySingleStock() {
-        System.out.println("Enter stock name: ");
-        String name = scan.nextLine();
-        boolean found = false;
-        for (Stock stock : stockList) {
-            if (stock.getCompanyName().equalsIgnoreCase(name)) {
-                System.out.println("Stock Name: " + stock.getCompanyName());
-                System.out.println("Number of Shares: " + stock.getNumberOfShares());
-                System.out.println("Purchase Price: " + fmt.format(stock.getPurchasePrice()));
-                System.out.println("Current Price: " + fmt.format(stock.getCurrentPrice()));
-
-                if (stock.getProfitLoss() >= 0) {
-                    System.out.println("\nProfit/Loss: Profit of " + fmt.format(stock.getProfitLoss()));
-                }
-                else {
-                    System.out.println("\nProfit/Loss: Loss of " + fmt.format(stock.getProfitLoss()));
-                }
-
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            System.out.println("\nStock not found");
-        }
-    }
-
-    public static void showStockPortfolio() {
-        System.out.println("Stock Portfolio:\n");
-        for (Stock stock : stockList) {
-            System.out.println(stock);
-        }
-        System.out.println("\nTotal Value: " + fmt.format(totalValue()));
-    }
+    public static void displayAllStudent()
+    {System.out.println("\nShow All Student");}
 
     public static void pause() {
-        System.out.println("\nPress ENTER to continue...");
+        System.out.println("\nPress Enter to continue...");
         scan.nextLine();
-        System.out.print("\n\n");
-    }
-
-    public static double totalValue() {
-        double total = 0;
-        for (Stock stock : stockList) {
-            total += (stock.getNumberOfShares() * stock.getCurrentPrice());
-        }
-        return total;
     }
 }
