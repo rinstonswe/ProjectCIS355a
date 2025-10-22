@@ -13,10 +13,18 @@ public class Student {
         this.test3 = 0;
     }
 
-    public void setStudentID(int studentID) {
+    public Student(int studentID, String name, double test1, double test2, double test3) {
+        this.studentID = studentID;
+        this.name = name;
+        this.test1 = test1;
+        this.test2 = test2;
+        this.test3 = test3;
+    }
+
+    public void setID(int studentID) {
         this.studentID = studentID;
     }
-    public int getStudentID() {
+    public int getID() {
         return studentID;
     }
 
@@ -57,7 +65,7 @@ public class Student {
     }
 
     public String calculateLetterGrade() {
-        String letterGrade = "";
+        String letterGrade;
         if (calculateAverage() >= 90.0) {
             letterGrade = "A";
         }
