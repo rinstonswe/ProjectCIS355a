@@ -1,4 +1,3 @@
-import java.io.*;
 import java.text.DecimalFormat;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -13,39 +12,54 @@ public class Main
 
     public static void main(String[] args) {
         int choice = 0;
-        final int EXIT_VALUE = 4;
+        final int EXIT_VALUE = 5;
 
         do {
             //show menu
             System.out.println("Menu\n");
-            System.out.println("1) Add Student");
-            System.out.println("2) Remove Student");
-            System.out.println("3) Display all students");
-            System.out.println("4) Exit");
+            System.out.println("1) Add Customer");
+            System.out.println("2) Edit Total Cost for Customer");
+            System.out.println("3) Delete Customer");
+            System.out.println("4) Display All Customers");
+            System.out.println("5) Exit\n");
 
 
             //get users choice
-            System.out.print("\nEnter your choice: ");
-            choice = scan.nextInt();
-            scan.nextLine();
+            choice = 0;      // choice variable should be created before the do-while menu loop
+            while( choice == 0 )
+            {
+                try {
+                    System.out.print("\nEnter your choice: ");
+                    choice = Integer.parseInt(scan.nextLine());
+                }
+                catch(NumberFormatException ex) {
+                    System.out.println("\nError. Please use numbers only for the menu.");
+                }
+            }
 
-            switch (choice) {
+
+            switch(choice)
+            {
                 case 1:
-                    addStudent();
+                    addCustomer();
                     pause();
                     break;
                 case 2:
-                    deleteStudent();
+                    editTotalCost();
                     pause();
                     break;
                 case 3:
-                    displayAllStudents();
+                    deleteCustomer();
                     pause();
                     break;
                 case 4:
-                    System.out.println("Goodbye!");
+                    displayAllCustomers();
+                    pause();
                     break;
-                default:        //Normally for error checking
+                case 5:
+                    System.out.println("\nGoodbye!");
+                    break;
+                default:
                     System.out.println("\nError. Please select from the menu.");
                     pause();
                     break;
@@ -53,30 +67,36 @@ public class Main
         } while (choice != EXIT_VALUE);
     }
 
-    public static void addStudent()
+    public static void addCustomer()
     {
-        // get student information
-        System.out.print( "\nEnter student ID: " );
-        int stuID = scan.nextInt();     // 3 ENTER
+        // get customer information
+        System.out.print( "\nEnter customer ID: " );
+        int cusID = scan.nextInt();     // 3 ENTER
         scan.nextLine();                // use up the ENTER key since getting String next
-        System.out.print( "Enter student name: " );
-        String stuName = scan.nextLine();
-        System.out.print( "Enter test1 grade: " );
-        double test1 = scan.nextDouble();
-        System.out.print( "Enter test2 grade: " );
-        double test2 = scan.nextDouble();
-        System.out.print( "Enter test3 grade: " );
-        double test3 = scan.nextDouble();   // 92.1 ENTER
+        System.out.print( "Enter customer name: " );
+        String cusName = scan.nextLine();
+        System.out.print( "Enter address: " );
+        String address = scan.nextLine();
+        System.out.print( "Enter yard type: " );
+        String yardType = scan.nextLine();
+        System.out.print( "Enter yard length: " );
+        double yardLength = scan.nextDouble();   // 92.1 ENTER
         scan.nextLine();                    // use up the ENTER key
+        System.out.print( "Enter yard width: " );
+        double yardWidth = scan.nextDouble();
+        scan.nextLine();
+        System.out.print( "Enter total cost: " );
+        double totalCost = scan.nextDouble();   // 92.1 ENTER
+        scan.nextLine();
 
-        // create a Student object
-        Student stu = new Student(stuID, stuName, test1, test2, test3);
+        // create a Customer object
+        Customer cus = new Customer(cusID, cusName, address, yardType, yardLength, yardWidth, totalCost);
 
-        // add the Student to the database using the StudentDB object
+        // add the Customer to the database using the DataIO object
         try
         {
-            StudentDB db = new StudentDB();
-            db.add(stu);
+            DataIO db = new DataIO();
+            db.add(cus);
             System.out.println( "\nRecord was written to the database." );
         }
         catch (ClassNotFoundException ex)
@@ -89,17 +109,18 @@ public class Main
         }
     }
 
-    private static void deleteStudent()
+    private static void deleteCustomer()
     {
-        // get the name of the student to delete
-        System.out.print("\nEnter name of student to delete: ");
-        String nameToDelete = scan.nextLine();
+        // get the name of the customer to delete
+        System.out.print("\nEnter ID of customer to delete: ");
+        int idToDelete = scan.nextInt();
+        scan.nextLine();
 
         try
         {
             // delete the record using the border class
-            StudentDB data = new StudentDB();
-            boolean result = data.delete(nameToDelete);
+            DataIO data = new DataIO();
+            boolean result = data.delete(idToDelete);
             if (result)              // same as:  if (result == true)
                 System.out.println("\nRecord was deleted from the database.");
             else
@@ -115,24 +136,52 @@ public class Main
         }
     }
 
-    private static void displayAllStudents()
-    {
-        // show output heading
-        System.out.println("\nGradebook:\n");
-        System.out.printf("%-5s%-15s%-10s%-10s%-10s%-10s%n", "ID", "Name",
-                "Test1", "Test2", "Test3", "Average", "Grade");
+    private static void editTotalCost(){
+        System.out.print("\nEnter ID of customer to update total cost: ");
+        int cusId = scan.nextInt();
+        scan.nextLine();
+        System.out.print("\nEnter new total cost: ");
+        int newCost = scan.nextInt();
+        scan.nextLine();
 
-        // read the student records
         try
         {
-            StudentDB db = new StudentDB();
-            ArrayList<Student> data = db.getAll();
+            DataIO data = new DataIO();
+            boolean result = data.update(cusId, newCost);
+            if (result)              // same as:  if (result == true)
+                System.out.println("\nRecord was updated in the database.");
+            else
+                System.out.println("\nRecord was not found.");
+        }
+
+        catch (ClassNotFoundException ex)
+        {
+            System.out.println("\nError: Driver not found. Error message: " + ex.getMessage());
+        }
+        catch (SQLException ex)
+        {
+            System.out.println("\nError: " + ex.getMessage());
+        }
+    }
+
+    private static void displayAllCustomers()
+    {
+        // show output heading
+        System.out.println("\nCustomer List:\n");
+        System.out.printf("%-5s%-15s%-10s%-10s%-10s%-10s%-10s%n", "ID", "Name",
+                "Address", "Type", "Length", "Width", "Total Cost");
+
+        // read the customer records
+        try
+        {
+            DataIO db = new DataIO();
+            ArrayList<Customer> data = db.getAll();
             for (int i = 0; i < data.size(); i++)
             {
-                Student stu = data.get(i);
-                System.out.printf("%-5d%-15s%-10.1f%-10.1f%-10.1f%-10.1f%-10s%n",
-                        stu.getID(), stu.getName(), stu.getTest1(), stu.getTest2(),
-                        stu.getTest3(), stu.calculateAverage(), stu.calculateLetterGrade());
+                Customer cus = data.get(i);
+                System.out.printf("%-5d%-15s%-10.1s%-10.1s%-10.1f%-10.1f%-10s%n",
+                        cus.getCustomerID(), cus.getName(), cus.getAddress(), cus.getYardType(),
+                        cus.getLength(), cus.getWidth(), cus.getTotalCost());
             }
         }
         catch(ClassNotFoundException ex)
